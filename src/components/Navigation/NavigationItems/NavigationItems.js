@@ -3,8 +3,8 @@ import NavigationItem from './NavigationItem/NavigationItem';
 
 const NavigationItems = () => (
 	<ul className='NavigationItems'>
-		<NavigationItem link='/' active > Burgr Builder </NavigationItem>
-		<NavigationItem link='/' > Checkout </NavigationItem>
+		<NavigationItem link='/'  exact> Burgr Builder </NavigationItem>
+		<NavigationItem link='/orders' > Orders </NavigationItem>
 	</ul>
 );
 

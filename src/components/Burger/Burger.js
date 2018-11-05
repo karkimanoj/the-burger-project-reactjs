@@ -5,7 +5,7 @@ import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 const Burger = ({ingredients}) => {
 	
 	let ingredientList = _.keys(ingredients).map(ingredient => {
-		return [...new Array(ingredients[ingredient].quantity)]
+		return [...new Array(ingredients[ingredient])]
 			.map( (_, index) => <BurgerIngredient key={ingredient+index} type={ingredient}/> );			
 	}).reduce((array, el) => array.concat(el), []); 
 	//console.log(_.keys(ingredients))

@@ -7,6 +7,7 @@ import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../HOC/withErrorHandler/withErrorHandler';
 
+
 class BurgerBuilder extends Component {
 
 	constructor (props){
@@ -66,37 +67,27 @@ class BurgerBuilder extends Component {
 	}
 
 	handleContinuePurchase () {
-		const order = {
-			ingredients : this.state.ingredients,
-			totalPrice : this.state.totalPrice.toFixed(2),
-			customer : {
-				name : 'Vivek Timalsina',
-				address : {
-					street : 'sanischare road',
-					city : 'Birtamode',
-					country : 'Nepal'
-				},
-				email : 'sudip@gmail.com'
-			},
-			deliveryMethod : 'fastest'
-		};
-		this.setState({ loading : true });
-		//setTimeout(() => this.setState({ loading : false , purchasing :false}), 2000);
 		
-		axios.post('/orders.json', order)
-			.then(response => {
-				this.setState({ loading : false , purchasing :false});
-				console.log(response);
-			})
-			.catch(errors => {
-				this.setState({ loading : false , purchasing :false});
-			});
-		
+		const {ingredients} = this.state;
+		let queryParams = Object.keys(ingredients).map( ingredient => 
+			encodeURIComponent(ingredient) + '=' + encodeURIComponent(ingredients[ingredient].quantity)
+		);
+		queryParams.push('totalPrice=' + encodeURIComponent(this.state.totalPrice));
+		const queryString = queryParams.join('&');
+		this.props.history.push({
+			pathname : '/checkout',
+			search : '?' + queryString
+		});
+		//console.log(queryParams.join('&'))
 	}
 
 	render () {
 		const rowstyle={ margin : 0};
 		const {ingredients} = this.state;
+		const optIngredients = {};
+		
+		for(let key in ingredients)
+			optIngredients[key] = ingredients[key].quantity;
 		
 		let orderSummary = null;		
 		let burgerInterface = <Spinner />;
@@ -111,11 +102,11 @@ class BurgerBuilder extends Component {
 				burgerInterface = (
 					<Fragment>
 						<div className='col-md-12'>
-							<Burger ingredients={ingredients} />
+							<Burger ingredients={optIngredients} />
 						</div>
 						<div className='w-100'></div>
 						<div className='col-md-12'>
-							<BurgerControls ingredients={ingredients}
+							<BurgerControls ingredients={optIngredients}
 							addIngredient={this.onIngredientAdd} 
 							removeIngredient={this.onIngredientRemove}
 							totalPrice={this.state.totalPrice} 
@@ -125,12 +116,11 @@ class BurgerBuilder extends Component {
 				);
 				orderSummary = <OrderSummary  
 					purchaseCanceled={this.handlePurchase}  
-					orderDetails={ingredients}
+					orderDetails={optIngredients}
 					purchaseContiued={this.handleContinuePurchase}
 					totalPrice={this.state.totalPrice} />;
 			}
 		}
-		
 		if(this.state.loading) orderSummary = <Spinner />;		
 
 		return(
@@ -139,6 +129,7 @@ class BurgerBuilder extends Component {
 					{orderSummary}
 				</Modal>
 				 {burgerInterface}
+			
 			</div>
 		);
 	}
