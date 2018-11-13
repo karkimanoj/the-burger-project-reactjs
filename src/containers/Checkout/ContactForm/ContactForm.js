@@ -3,6 +3,7 @@ import axios from '../../../axios-orders';
 import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import * as Yup from 'yup';
+import {connect} from 'react-redux';
 
 const schema = Yup.object().shape({
 				name: Yup.string().required().min(3).max(254),
@@ -187,39 +188,6 @@ class ContactForm extends Component {
 				</div>
 			</form>	
 		);
-	
-		/*
-		let form =(
-			<form className='mt-4' onSubmit={this.onFormSubmit}>
-				<h3> Enter Your Contact Here ! </h3>
-				<div className="form-group">
-					
-					<input type='text 'name="name"  className="form-control" id="name"  placeholder="Name"/>
-				</div>
-				<div className="form-group">
-					
-					<input type='email 'name="email"  className="form-control" id="email"  placeholder="Email"/>
-				</div>
-				<div className="form-group">
-					
-					<input type='text 'name="street"  className="form-control" id="street"  placeholder="Street"/>
-				</div>
-				<div className="form-group">
-					<input type='text 'name="postalCode"  className="form-control" id="postal-code"  placeholder="Postal Code"/>
-				</div>
-				<div className="form-group">
-					<label htmlFor='deliveryMethod'> </label>
-					<select className='form-control' id='deliveryMethod'>
-							<option value="normal">normal</option>
-							<option value="fast">fast</option>
-							<option value="fastest">fastest</option>
-						</select>	
-				</div>
-				<div className='form-group'>
-					<button type='submit' className='btn btn-lg btn-success'> Order </button>
-				</div>
-			</form>
-		);*/
 
 		if(this.state.loading) form = <Spinner /> ;
 
@@ -234,4 +202,9 @@ class ContactForm extends Component {
 	}
 }
 
-export default ContactForm;
+const mapStateToProps = ({burger}) => ({
+	ingredients : burger.ingredients,
+	totalPrice : burger.totalPrice
+})
+
+export default connect(mapStateToProps)(ContactForm);

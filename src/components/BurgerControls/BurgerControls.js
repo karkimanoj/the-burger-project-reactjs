@@ -15,13 +15,13 @@ const BurgerControl = ({type, addIngredient, removeIngredient, disabled}) => {
 	);
 }
 
-const BurgerControls = 
-({addIngredient, removeIngredient,  totalPrice, ingredients, handlePurchase}) => {
+const BurgerControls = props => {
+	const {	addIngredient, removeIngredient,  totalPrice, 
+			ingredients, handlePurchase} = props;
 	const ingredientsArray=_.keys(ingredients);
 	const sum = ingredientsArray.map( ingredient => ingredients[ingredient])
 			.reduce((sum, el) => sum+=el, 0); 
 			
-	
 	return (
 	
 		<div className='row mt-4 burger-controls-bg-color'>

@@ -25,7 +25,8 @@ const BurgerIngredient = ({ type }) => {
 			break;
 		case 'bacon':		
 			Ingredient = <div className='Bacon'> </div>;
-			break;					
+			break;
+		default : ;						
 	}
 
 	return Ingredient;

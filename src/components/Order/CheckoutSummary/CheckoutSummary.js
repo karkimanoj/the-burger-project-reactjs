@@ -2,7 +2,7 @@ import React from 'react';
 import Burger from '../../Burger/Burger';
 
 const CheckoutSummary = ({ingredients, checkoutContinued, checkoutCancelled}) =>  {
-
+console.log(ingredients)
 	return (
 		<div className='row'>
 			<div className='col-md-12 text-center mt-2'>
