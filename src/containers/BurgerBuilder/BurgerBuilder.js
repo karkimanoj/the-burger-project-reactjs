@@ -7,7 +7,7 @@ import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../HOC/withErrorHandler/withErrorHandler';
 import {connect} from 'react-redux';
-import {addIngredient, removeIngredient} from '../../store/actions';
+import {addIngredient, removeIngredient, fetchIngredients} from '../../store/actions';
 
 
 class BurgerBuilder extends Component {
@@ -17,7 +17,7 @@ class BurgerBuilder extends Component {
 		this.state = {
 			purchasing : false,
 			//loading :false,
-			error : false
+			//error : false
 		};
 
 		this.handlePurchase = this.handlePurchase.bind(this);
@@ -25,7 +25,9 @@ class BurgerBuilder extends Component {
 		
 	}
 	
-	componentWillMount () {
+	componentDidMount () {
+		this.props.fetchIngredients();
+		/*
 		axios.get('/ingredients.json')
 			.then(response => {
 				
@@ -34,6 +36,7 @@ class BurgerBuilder extends Component {
 			.catch( error => {
 				this.setState({error : true});
 			});
+			*/
 	}
 
 	handlePurchase (purchase) {
@@ -48,7 +51,7 @@ class BurgerBuilder extends Component {
 
 	render () {  
 
-		const {ingredients, totalPrice} = this.props;
+		const {ingredients, totalPrice, error} = this.props;
 		const optIngredients = {};
 		
 		for(let key in ingredients)
@@ -57,7 +60,7 @@ class BurgerBuilder extends Component {
 		let orderSummary = null;		
 		let burgerInterface = <Spinner />;
 		
-		if (this.state.error) 
+		if (error) 
 			burgerInterface = <center> <h1 className='mt-5 text-danger'> 
 				Ingredients loading failed! 
 			</h1></center>;
@@ -101,8 +104,9 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = ({burger}) => ({
 	ingredients : burger.ingredients,
-	totalPrice : burger.totalPrice
+	totalPrice : burger.totalPrice,
+	error : burger.error
 });
 
-export default 
-	connect(mapStateToProps, {addIngredient, removeIngredient})(withErrorHandler(BurgerBuilder, axios));   
+export default connect(mapStateToProps, {addIngredient, removeIngredient, fetchIngredients}
+	)(withErrorHandler(BurgerBuilder, axios));   

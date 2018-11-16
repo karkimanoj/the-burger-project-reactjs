@@ -4,6 +4,9 @@ import Spinner from '../../../components/UI/Spinner/Spinner';
 import Input from '../../../components/UI/Input/Input';
 import * as Yup from 'yup';
 import {connect} from 'react-redux';
+import {orderBurgerInit} from '../../../store/actions';
+import withErrorHandler from '../../../HOC/withErrorHandler/withErrorHandler';
+import getOptimizedIngredients from '../../../utils/getOptimizedIngredients';
 
 const schema = Yup.object().shape({
 				name: Yup.string().required().min(3).max(254),
@@ -27,7 +30,6 @@ class ContactForm extends Component {
 				country : '',
 				deliveryMethod : 'cheapest',
 			},
-			validationErrors : null,
 			touched : {
 				name : false,
 				email : false,
@@ -36,7 +38,7 @@ class ContactForm extends Component {
 				country : false,
 				deliveryMethod : false
 			},
-			loading : false,
+			validationErrors : null,
 			
 		}
 		this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -88,21 +90,13 @@ class ContactForm extends Component {
 	onFormSubmit (e) {
 		e.preventDefault();
 		const order = {
-			ingredients : this.props.ingredients,
+			ingredients : getOptimizedIngredients(this.props.ingredients),
 			totalPrice : this.props.totalPrice.toFixed(2),
 			orderData : this.state.orderForm
 		};
 
-		this.setState({ loading : true });
-		axios.post('/orders.json', order)
-			.then(response => {
-				this.setState({ loading : false});
-				this.props.history.push('/');
-				console.log(response);
-			})
-			.catch(errors => {
-				this.setState({ loading : false });
-			}); 
+		this.props.orderBurgerInit(order, () => this.props.history.push('/'));			
+	
 	}
 
 	render () {
@@ -160,8 +154,8 @@ class ContactForm extends Component {
 		};
 		const {orderForm, validationErrors, touched } = this.state;
 		let form = (
-			<form className='mt-4' onSubmit={this.onFormSubmit}>
-				<h3> Enter Your Contact Here ! </h3>
+			<form className='mt-2' onSubmit={this.onFormSubmit}>
+				<center><h3> Enter Your Contact Here ! </h3></center>
 				{Object.keys(formElements).map( element => 
 					{	
 						let error = null;
@@ -189,7 +183,7 @@ class ContactForm extends Component {
 			</form>	
 		);
 
-		if(this.state.loading) form = <Spinner /> ;
+		if(this.props.ordering) form = <Spinner /> ;
 
 		return (
 			<div className = 'row'>
@@ -202,9 +196,11 @@ class ContactForm extends Component {
 	}
 }
 
-const mapStateToProps = ({burger}) => ({
+const mapStateToProps = ({burger, order}) => ({
 	ingredients : burger.ingredients,
-	totalPrice : burger.totalPrice
+	totalPrice : burger.totalPrice,
+	ordering : order.ordering
 })
 
-export default connect(mapStateToProps)(ContactForm);
+export default connect(mapStateToProps, {orderBurgerInit}
+	)(withErrorHandler(ContactForm, axios));

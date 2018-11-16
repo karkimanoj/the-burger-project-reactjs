@@ -1,3 +1,15 @@
+export {
+	fetchIngredients,
+	addIngredient,
+	removeIngredient
+} from './burgerBuilder.js';
+
+export {
+	orderBurgerInit,
+	fetchOrders
+}
+from './orders.js';
+/*
 import * as actionTypes from './actionTypes';
 
 export function fetchIngredients() {
@@ -17,3 +29,4 @@ export function removeIngredient(ingredientName) {
 			ingredientName : ingredientName 
 	};
 }
+*/

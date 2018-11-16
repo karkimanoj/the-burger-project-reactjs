@@ -2,46 +2,43 @@ import React, {Component} from 'react';
 import Order from '../../components/Order/Order';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import {connect} from 'react-redux';
+import {fetchOrders} from '../../store/actions';
+import withErrorHandler from '../../HOC/withErrorHandler/withErrorHandler';
 
 class Orders extends Component {
-	constructor (props) {
-		super(props);
-		this.state = {
-			orders : [],
-			loading : true
-		}
-	}
 
-	componentWillMount (){
-		//this.setState({loading : true});
-		axios.get('/orders.json')
-			.then( response => {
-				const orders=Object.keys(response.data).map(key => {
-					return { id : key,...response.data[key] }
-				});
-				//console.log('orders',orders)
-				this.setState({orders : orders, loading : false});
-			})
-			.catch( () => {
-				this.setState({loading : false});
-			});
+	componentDidMount () {
+	
+		this.props.fetchOrders();
+		
+	}
+	
+	renderList = (orders) => {
+		return Object.keys(orders).map( key => (
+			<Order key={key} 
+				ingredients={orders[key].ingredients} 
+				totalPrice={orders[key].totalPrice} />
+		))
 	}
 
 	render () { 
-		
-		if(!this.state.loading)
+		const {orders} = this.props;
+		if(orders)
 		return(
 				<div className='container-fluid mt-3'>
 				<h1 className='text-center'> Your Orders ! </h1>
-				{this.state.orders.map( order => (
-					<Order key={order.id} ingredients={order.ingredients} totalPrice={order.totalPrice}/>
-				))}
+				{ this.renderList(orders) }
 			</div>
 			);
-		return <Spinner />;
+		else
+			return <Spinner />;
 
 		
 	}
 }
 
-export default Orders;
+const mapStateToProps = ({order}) => ({orders : order.orders});
+
+export default connect(mapStateToProps, {fetchOrders})(
+	withErrorHandler(Orders, axios));

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary';
 import ContactForm from './ContactForm/ContactForm';
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
+import getOptimizedIngredients  from '../../utils/getOptimizedIngredients';
 
 class Checkout extends Component {
 	constructor (props) {
@@ -19,16 +20,18 @@ class Checkout extends Component {
 	onCheckoutCancel () {
 		this.props.history.goBack();
 	}
+	
+	
 
 	render () {
-		const ingredients = {...this.props.ingredients};
-		let optIngredients = {};
+		const optIngredients = getOptimizedIngredients(this.props.ingredients);
+		const sum = Object.keys(optIngredients)
+			.reduce((sum, quantity) => sum + (optIngredients[quantity]), 0);
 		
-		for(let key in ingredients)
-			optIngredients[key] = ingredients[key].quantity;
 
-		return (
-			<div>
+		let summary = <Redirect to='/' />
+		if(sum) 
+			summary = <div>
 				<CheckoutSummary 
 				ingredients={optIngredients}
 				checkoutContinued ={this.onCheckoutContinue}
@@ -40,8 +43,8 @@ class Checkout extends Component {
 							history={this.props.history}/>
 				}/>	
 			</div>
-			
-		);
+
+		return summary;
 	}
 }
 
