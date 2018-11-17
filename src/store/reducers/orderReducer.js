@@ -18,7 +18,7 @@ export default (state = initialState, action) => {
 				...state,
 				ordering : false
 			};	
-		case actionTypes.FETCH_INGREDIENTS_SUCCESS :
+		case actionTypes.FETCH_ORDERS_SUCCESS :
 			return {
 				...state,
 				orders : action.orders

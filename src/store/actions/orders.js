@@ -20,10 +20,12 @@ export function orderBurgerFailed() {
 }
 
 export function orderBurgerInit(order, successCallback) {
-	return dispatch => {
+	return (dispatch, getState) => {
+
+		const {idToken} = getState().auth;
 		dispatch(orderBurgerStart());
 
-		axios.post('/orders.json', order
+		axios.post('/orders.json?auth='+idToken, order
 		).then( response => {
 			console.log(response)
 			dispatch(orderBurgerSuccess())			
@@ -36,22 +38,24 @@ export function orderBurgerInit(order, successCallback) {
 }
 
 export function fetchOrdersFailed() {
-	return { type : actionTypes.FETCH_INGREDIENTS_FAILED }
+	return { type : actionTypes.FETCH_ORDERS_FAILED }
 }
 
 export function fetchOrdersSuccess(orders) {
 	return {
-		type : actionTypes.FETCH_INGREDIENTS_SUCCESS,
-		orders : orders
+		type : actionTypes.FETCH_ORDERS_SUCCESS,
+		orders
 	};
 }
 
 export function fetchOrders() {
-	return dispatch => {
-		axios.get('orders.json')
+	return (dispatch, getState) => {
+		const {idToken} = getState().auth;
+		
+		axios.get('/orders.json?auth='+idToken)
 		.then( response => 
 			dispatch(fetchOrdersSuccess(response.data))
-		).then( error => 
+		).catch( error => 
 			dispatch(fetchOrdersFailed())
 		);
 	}

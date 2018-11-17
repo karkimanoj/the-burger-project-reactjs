@@ -17,7 +17,8 @@ const BurgerControl = ({type, addIngredient, removeIngredient, disabled}) => {
 
 const BurgerControls = props => {
 	const {	addIngredient, removeIngredient,  totalPrice, 
-			ingredients, handlePurchase} = props;
+			ingredients, handlePurchase, isAuthenticated} = props;
+
 	const ingredientsArray=_.keys(ingredients);
 	const sum = ingredientsArray.map( ingredient => ingredients[ingredient])
 			.reduce((sum, el) => sum+=el, 0); 
@@ -28,21 +29,23 @@ const BurgerControls = props => {
 			<div className='col-md-8 offset-md-2 p-4 text-center'>
 				<p> Total Price : <strong> {totalPrice.toFixed(2)} </strong> </p>
 				
-				{ ingredientsArray.map( (ingredient, i) => 
+				{ 
+					ingredientsArray.map( (ingredient, i) => 
 					<BurgerControl key={ingredient+i} type={ingredient} 
 					disabled={ingredients[ingredient] <= 0}
 					addIngredient = {addIngredient} 
-					removeIngredient = {removeIngredient}/>	
-				)}
+					removeIngredient = {removeIngredient}/>	)
+				}
+
 				<button className='bn btn-light btn-lg' 
 					disabled={sum <= 0} 
 					onClick={() => handlePurchase(true)}> 
-					Order 
+					{isAuthenticated ? 'Order' : 'Sign Up To Order'} 
+
 				</button>
 			</div>
 		</div>	
 	
 	);
 }
-
-export default BurgerControls;
+ export default BurgerControls;

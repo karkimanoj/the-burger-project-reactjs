@@ -9,22 +9,24 @@ const withErrorHandler = (WrappedComponent, axios) => {
 			super(props);
 			this.state = { errors : null };
 			this.errorConfirmedHandler = this.errorConfirmedHandler.bind(this);
-		}
-
-		componentDidMount () {
-			
+			/* interceptors are set in constructor bcoz interceptors should be set before axios 
+			  request is made in <WrappedComponent /> . setting interceptors in 
+			  componentWillMount also works but componentWillMount is depreciated.		
+			*/
 			this.reqInterceptors = axios.interceptors.request.use(request => {
-				this.setState({errors : null});
+
+				this.setState({errors : null}); 
 				return request;
 			});
 
 			this.resInterceptors = axios.interceptors.response.use(
-				response => response ,
+				response => response,
 				error => {
 					this.setState({errors : error});
 					return Promise.reject(error);
 				}
 			);
+
 		}
 
 		componentWillUnmount () {
@@ -45,6 +47,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
 		}
 
 		render () {
+
 			return (
 				<Fragment>
 					<Modal show={this.state.errors} modalClose={this.errorConfirmedHandler}> 

@@ -9,7 +9,6 @@ import withErrorHandler from '../../HOC/withErrorHandler/withErrorHandler';
 class Orders extends Component {
 
 	componentDidMount () {
-	
 		this.props.fetchOrders();
 		
 	}
@@ -40,5 +39,4 @@ class Orders extends Component {
 
 const mapStateToProps = ({order}) => ({orders : order.orders});
 
-export default connect(mapStateToProps, {fetchOrders})(
-	withErrorHandler(Orders, axios));
+export default connect(mapStateToProps, {fetchOrders})(withErrorHandler(Orders, axios));

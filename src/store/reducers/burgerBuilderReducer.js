@@ -41,7 +41,8 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				ingredients : action.ingredients,
-				totalPrice : 4
+				totalPrice : 4,
+				error : false 
 			};
 		case actionTypes.SET_INGREDIENTS_FAILED :
 			return {

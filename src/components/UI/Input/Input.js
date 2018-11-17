@@ -41,7 +41,7 @@ const Input = (props) => {
 			{label && <label> {label} </label> }
 			{inputElement}
 			
-			{error && touched && <span  className="form-text text-danger">
+			{ touched && error && <span  className="form-text text-danger">
 							    	{error}  </span>}
 		</div>
 	);

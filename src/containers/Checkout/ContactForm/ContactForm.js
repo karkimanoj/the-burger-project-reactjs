@@ -47,10 +47,10 @@ class ContactForm extends Component {
 		this.onInputBlur = this.onInputBlur.bind(this);
 		
 	}
-
+/*
 	componentDidMount() {
 		this.validateForm(this.state.orderForm);
-	}	
+	}	*/
 
 	onInputchange (e) {
 
@@ -176,7 +176,7 @@ class ContactForm extends Component {
 				)}
 				<div className='form-group'>
 					<button type='submit' 
-						disabled={this.state.validationErrors ? true : false} 
+						disabled={!schema.isValidSync(orderForm)} 
 						className='btn btn-lg btn-success text-center'>
 					 Order </button>
 				</div>

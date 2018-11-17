@@ -27,20 +27,13 @@ class BurgerBuilder extends Component {
 	
 	componentDidMount () {
 		this.props.fetchIngredients();
-		/*
-		axios.get('/ingredients.json')
-			.then(response => {
-				
-				this.setState({ingredients : response.data});
-			})
-			.catch( error => {
-				this.setState({error : true});
-			});
-			*/
 	}
 
 	handlePurchase (purchase) {
-		this.setState({purchasing : purchase});
+		if(this.props.isAuthenticated)
+			this.setState({purchasing : purchase});
+		else 
+			this.props.history.push('/auth');
 	}
 
 	handleContinuePurchase () {
@@ -75,13 +68,15 @@ class BurgerBuilder extends Component {
 						<div className='w-100'></div>
 						<div className='col-md-12'>
 							<BurgerControls ingredients={optIngredients}
-							addIngredient={this.props.addIngredient} 
-							removeIngredient={this.props.removeIngredient}
-							totalPrice={totalPrice} 
-							handlePurchase={this.handlePurchase}/>	
+							addIngredient= {this.props.addIngredient} 
+							removeIngredient= {this.props.removeIngredient}
+							totalPrice= {totalPrice} 
+							handlePurchase= {this.handlePurchase}
+							isAuthenticated= {this.props.isAuthenticated}/>	
 						</div>
 					</Fragment>
 				);
+
 				orderSummary = <OrderSummary  
 					purchaseCanceled={this.handlePurchase}  
 					orderDetails={optIngredients}
@@ -102,10 +97,11 @@ class BurgerBuilder extends Component {
 	}
 }
 
-const mapStateToProps = ({burger}) => ({
+const mapStateToProps = ({burger, auth}) => ({
 	ingredients : burger.ingredients,
 	totalPrice : burger.totalPrice,
-	error : burger.error
+	error : burger.error,
+	isAuthenticated : auth.idToken !== null
 });
 
 export default connect(mapStateToProps, {addIngredient, removeIngredient, fetchIngredients}
