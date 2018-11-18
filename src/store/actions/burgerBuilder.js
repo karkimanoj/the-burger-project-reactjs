@@ -40,3 +40,9 @@ export function removeIngredient(ingredientName) {
 			ingredientName : ingredientName 
 	};
 }
+
+export const resetBurgerBuilding = () => {
+	return {
+		type : actionTypes.RESET_BURGER_BUILDING
+	}
+}

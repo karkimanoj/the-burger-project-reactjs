@@ -8,35 +8,12 @@ const initialState = {
 		meat : { quantity: 0, unitPrice : 0.7}
 	}*/
 	totalPrice : 4,
+	building : false,
 	error : false
 };
 
 export default function (state = initialState, action) { 
 	switch (action.type) { 
-		case actionTypes.ADD_INGREDIENT: 
-			return { 
-				...state,
-				ingredients : {
-					...state.ingredients,
-					[action.ingredientName] : {
-						...state.ingredients[action.ingredientName] ,
-						quantity : state.ingredients[action.ingredientName].quantity + 1
-					}
-				},
-				totalPrice : state.totalPrice + state.ingredients[action.ingredientName].unitPrice  
-			};
-		case actionTypes.REMOVE_INGREDIENT:
-			return { 
-				...state,
-				ingredients : {
-					...state.ingredients,
-					[action.ingredientName] : {
-						...state.ingredients[action.ingredientName],
-						quantity : state.ingredients[action.ingredientName].quantity - 1
-					}
-				},
-				totalPrice : state.totalPrice - state.ingredients[action.ingredientName].unitPrice
-			};	
 		case actionTypes.SET_INGREDIENTS :
 			return {
 				...state,
@@ -48,6 +25,37 @@ export default function (state = initialState, action) {
 			return {
 				...state,
 				error : true
+			};	
+		case actionTypes.ADD_INGREDIENT: 
+			return { 
+				...state,
+				ingredients : {
+					...state.ingredients,
+					[action.ingredientName] : {
+						...state.ingredients[action.ingredientName] ,
+						quantity : state.ingredients[action.ingredientName].quantity + 1
+					}
+				},
+				totalPrice : state.totalPrice + state.ingredients[action.ingredientName].unitPrice ,
+				building : true 
+			};
+		case actionTypes.REMOVE_INGREDIENT:
+			return { 
+				...state,
+				ingredients : {
+					...state.ingredients,
+					[action.ingredientName] : {
+						...state.ingredients[action.ingredientName],
+						quantity : state.ingredients[action.ingredientName].quantity - 1
+					}
+				},
+				totalPrice : state.totalPrice - state.ingredients[action.ingredientName].unitPrice,
+				building : true ,
+			};	
+		case actionTypes.RESET_BURGER_BUILDING :
+			return {
+				...state,
+				building : false
 			};	
 		default :
 			return state;	

@@ -9,13 +9,16 @@ import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './store/reducers';
 
+import {authCheckState} from './store/actions';
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, 
 	composeEnhancers(applyMiddleware(thunk)));
+const onTryAutoLogin = () => store.dispatch(authCheckState());
 
 const app = <Provider store={store}>
 	<BrowserRouter>
-		<App/>
+		<App onTryAutoLogin = {onTryAutoLogin}/>
 	</BrowserRouter>
 </Provider>;
 

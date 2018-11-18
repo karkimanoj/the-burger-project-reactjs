@@ -1,7 +1,8 @@
 export {
 	fetchIngredients,
 	addIngredient,
-	removeIngredient
+	removeIngredient,
+	resetBurgerBuilding
 } from './burgerBuilder.js';
 
 export {
@@ -11,6 +12,8 @@ export {
 from './orders.js';
 export {
 	authenticateUser,
-	authLogout
+	authLogout,
+	authCheckState
 }
 from './auth.js';
+

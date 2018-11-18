@@ -9,22 +9,26 @@ import Orders from './containers/Orders/Orders';
 import Logout from './containers/Auth/Logout';
 
 class App extends Component {
-  render() {
-    return (
-      <Layout >
-        <div style = {{marginTop : '56px'}}>
+	componentDidMount() {
+		this.props.onTryAutoLogin();
+	}
+
+	render() { 
+	return (
+	  <Layout >
+	    <div style = {{marginTop : '56px'}}>
 		  <Switch>
 		  	<Route path='/auth' component={Auth}/>	
 		  	<Route path='/logout' component={Logout}/>
 		  	<Route path='/checkout' component={Checkout}/>
 		  	<Route path='/orders'  component={Orders}  />
 			<Route path='/' exact component={BurgerBuilder}/>
-	
+
 		  </Switch>
 		 </div>
-      </Layout>
-    );
-  }
+	  </Layout>
+	);
+	}
 }
 
 export default App;

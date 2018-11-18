@@ -7,7 +7,8 @@ import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../HOC/withErrorHandler/withErrorHandler';
 import {connect} from 'react-redux';
-import {addIngredient, removeIngredient, fetchIngredients} from '../../store/actions';
+import {addIngredient, removeIngredient, fetchIngredients, resetBurgerBuilding} 
+	from '../../store/actions';
 
 
 class BurgerBuilder extends Component {
@@ -26,7 +27,11 @@ class BurgerBuilder extends Component {
 	}
 	
 	componentDidMount () {
-		this.props.fetchIngredients();
+		if(!this.props.building) {
+			console.log('building = ', this.props.building)
+			this.props.fetchIngredients();
+		}
+		
 	}
 
 	handlePurchase (purchase) {
@@ -37,6 +42,7 @@ class BurgerBuilder extends Component {
 	}
 
 	handleContinuePurchase () {
+		this.props.resetBurgerBuilding();
 		this.props.history.push({
 			pathname : '/checkout',
 		});
@@ -101,8 +107,10 @@ const mapStateToProps = ({burger, auth}) => ({
 	ingredients : burger.ingredients,
 	totalPrice : burger.totalPrice,
 	error : burger.error,
+	building : burger.building,
 	isAuthenticated : auth.idToken !== null
 });
 
-export default connect(mapStateToProps, {addIngredient, removeIngredient, fetchIngredients}
-	)(withErrorHandler(BurgerBuilder, axios));   
+const mapDispatchToProps = {addIngredient, removeIngredient, fetchIngredients, resetBurgerBuilding};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));   
