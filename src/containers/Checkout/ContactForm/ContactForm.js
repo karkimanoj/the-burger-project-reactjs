@@ -92,14 +92,15 @@ class ContactForm extends Component {
 		const order = {
 			ingredients : getOptimizedIngredients(this.props.ingredients),
 			totalPrice : this.props.totalPrice.toFixed(2),
-			orderData : this.state.orderForm
+			orderData : this.state.orderForm,
+			userId : this.props.userId
 		};
 
 		this.props.orderBurgerInit(order, () => this.props.history.push('/'));			
 	
 	}
 
-	render () {
+	render () { 
 		const formElements = {
 			name : {
 				elementType : 'input',
@@ -196,10 +197,11 @@ class ContactForm extends Component {
 	}
 }
 
-const mapStateToProps = ({burger, order}) => ({
+const mapStateToProps = ({burger, order, auth}) => ({
 	ingredients : burger.ingredients,
 	totalPrice : burger.totalPrice,
-	ordering : order.ordering
+	ordering : order.ordering,
+	userId : auth.localId
 })
 
 export default connect(mapStateToProps, {orderBurgerInit}

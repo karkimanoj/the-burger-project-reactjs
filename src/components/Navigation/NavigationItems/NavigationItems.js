@@ -2,7 +2,7 @@ import React from 'react';
 import NavigationItem from './NavigationItem/NavigationItem';
 
 const NavigationItems = props => (
-	<ul className='NavigationItems'>
+	<ul className='NavigationItems' onClick={props.closed}>
 		<NavigationItem link='/'  exact> Burgr Builder </NavigationItem>
 		{ props.isAuthenticated ? <NavigationItem link='/orders' > Orders </NavigationItem> : null }
 		{ props.isAuthenticated ? 

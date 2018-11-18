@@ -9,8 +9,7 @@ import withErrorHandler from '../../HOC/withErrorHandler/withErrorHandler';
 class Orders extends Component {
 
 	componentDidMount () {
-		this.props.fetchOrders();
-		
+		this.props.fetchOrders();		
 	}
 	
 	renderList = (orders) => {

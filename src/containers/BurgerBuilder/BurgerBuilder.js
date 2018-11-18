@@ -17,8 +17,6 @@ class BurgerBuilder extends Component {
 		super(props);
 		this.state = {
 			purchasing : false,
-			//loading :false,
-			//error : false
 		};
 
 		this.handlePurchase = this.handlePurchase.bind(this);

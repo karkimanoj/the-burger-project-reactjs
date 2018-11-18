@@ -16,7 +16,7 @@ const Sidebar = (props) => {
 					<Logo />
 				</div>
 				<nav>
-					<NavigationItems isAuthenticated={props.isAuthenticated}/>
+					<NavigationItems isAuthenticated={props.isAuthenticated} closed={props.closed}/>
 				</nav>
 			</div>
 		</Fragment>

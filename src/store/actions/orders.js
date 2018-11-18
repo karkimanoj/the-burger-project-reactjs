@@ -50,9 +50,11 @@ export function fetchOrdersSuccess(orders) {
 
 export function fetchOrders() {
 	return (dispatch, getState) => {
-		const {idToken} = getState().auth;
-		
-		axios.get('/orders.json?auth='+idToken)
+		const {idToken, localId} = getState().auth;
+		//localId is userId
+		const params = `?auth=${idToken}&&orderBy="userId"&&equalTo="${localId}"`;
+
+		axios.get('/orders.json'+params)
 		.then( response => 
 			dispatch(fetchOrdersSuccess(response.data))
 		).catch( error => 

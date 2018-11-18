@@ -8,9 +8,9 @@ const Burger = ({ingredients}) => {
 		return [...new Array(ingredients[ingredient])]
 			.map( (_, index) => <BurgerIngredient key={ingredient+index} type={ingredient}/> );			
 	}).reduce((array, el) => array.concat(el), []); 
-	//console.log(_.keys(ingredients))
+
 	if(ingredientList.length === 0) 
-		ingredientList = <h4> Please start adding ingrediants! </h4>;
+		ingredientList = <h5><b> Please start adding ingrediants! </b></h5>;
 
 	return (
 		<div className='row' >
@@ -19,11 +19,6 @@ const Burger = ({ingredients}) => {
 				<BurgerIngredient type='bread-top' />
 				{ingredientList}
 				<BurgerIngredient type='bread-bottom' />
-				{/* 
-				
-				<BurgerIngredient type='cheese' />
-				<BurgerIngredient type='meat' />
-				*/}
 		
 			</div>
 		</div>		
